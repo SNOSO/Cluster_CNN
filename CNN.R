@@ -2,7 +2,7 @@ library(keras)
 library(tensorflow)
 library(caret)  # for confusionMatrix function
 
-xenium.obj <- readRDS("~/spatial_cluster_evaluation/manuscript_spatial_transcriptomics_cluster_evaluation_2024/XeniumData.RDS")
+xenium.obj <- readRDS("XeniumData.RDS")
 
 matrix <- xenium.obj@assays$SCT@scale.data
 coordinates <- cbind(as.numeric(colnames(xenium.obj)),
@@ -14,7 +14,7 @@ coordinates[,3] <- round(as.numeric(coordinates[,3]))
 
 labels <- xenium.obj$niches
 
-RunBEAR <- function(matrix = matrix, coordinates = coordinates, labels = labels, nsize = 3) {
+RunCNN <- function(matrix = matrix, coordinates = coordinates, labels = labels, nsize = 3) {
   set.seed(22)
   
   # Train/test split
@@ -166,6 +166,6 @@ RunBEAR <- function(matrix = matrix, coordinates = coordinates, labels = labels,
   return(list(evaluation = evaluation, predictions = cnn_pred, confusion_matrix = confusion))
 }
 
-result <- RunBEAR(matrix = matrix, coordinates = coordinates, labels = labels, nsize = 3)
+result <- RunCNN(matrix = matrix, coordinates = coordinates, labels = labels, nsize = 3)
 
 
